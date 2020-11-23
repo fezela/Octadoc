@@ -1,0 +1,178 @@
+import pyoo
+from settings import SETTINGS2
+
+os.system("soffice --accept=\"socket,host=localhost,port=2002;urp;\"")
+desktop = pyoo.Desktop('localhost', 2002)
+
+doc = desktop.open_spreadsheet(SETTINGS2['osdPath'])
+
+for index, sheet in enumerate(doc.sheets):
+    sheet = doc.sheets[index]
+    y = 0
+    x = 0
+    print("+++ {} +++".format(sheet))
+    
+    while sheet[y][0].value != "":
+        if sheet[y][x].value != "":
+            if sheet[y][x].value == "null":
+                continue
+            else:
+                print(sheet[y][x].value)
+            x+= 1
+        else:
+            
+            x = 0
+            y+= 1
+            
+            
+    print(sheet[y][x].value)
+    print("\n")
+        
+doc.close()
+
+####################################################
+for index, sheet in enumerate(doc.sheets):
+    sheet = doc.sheets[index]
+    y = 0
+    x = 0
+    print("+++ {} +++".format(sheet))
+    
+    while sheet[y][0].value != "":
+        if sheet[y][x].value != "":
+            
+            x+= 1
+        else:
+            
+            x = 0
+            y+= 1
+            
+            
+    print(sheet[y - 1][x].value)
+    print("\n")
+
+####################################################
+
+document = doc
+    for index, sheet in enumerate(doc.sheets):
+        sheet = doc.sheets[index]
+        y = 0
+        x = 0
+        tableComplete = False
+        print("+++ {} +++".format(sheet))
+    
+        while tableComplete != True:
+            if sheet[y][x].value != "":
+                if sheet[y][x].value == "null":
+                    continue
+                else:
+                    print(sheet[y][x].value)
+                    x+= 1
+            
+            elif sheet[y][x].value == "":
+                if sheet[y + 1][0].value == "":
+                    tableComplete = True
+
+                else:
+                    x = 0
+                    y += 1
+
+            
+            else:
+                print("somethings gone wrong in readLibre()")
+            
+            
+        print(sheet[y][x].value)
+
+
+######################################################
+
+def buildJSDB(DBname, TableData, JSON=False, writeFile=False):
+    def write():
+                    
+        if writeFile != False and JSON == True:
+            if amHome == True:
+                f = open(home['jsonDatabase'], "w")
+            else:
+                f = open(away['jsonDatabase'], "w")
+            for line in statement:
+                f.write(line)
+        
+        elif writeFile != False:
+            if amHome == True:
+                f = open(home['jsDatabase'], "w")
+            else:
+                f = open(away['jsDatabase'], "w")
+            for line in statement:
+                f.write(line)
+    #######################-Main code begins below-####################
+    statement = ""
+    if JSON != True:
+        statement += "var {} = ".format(DBname)
+        statement += "{"
+        for colInd, collection in enumerate(TableData):
+            
+            
+            statement += "\n\t" + collection['tableName'] + ": ["
+            for tabIndx in range(len(collection['tables'])):
+                statement += "\n\t    {" + collection['objectName'] + ": {"
+                for index, header in enumerate(collection['headers']):
+                    statement += header + ": " + "\"" + collection['tables'][tabIndx][index]
+                    statement += "\""
+                    if index == len(collection['headers']) - 1:
+                        statement += " "
+                    else:
+                        statement += ", "
+                if tabIndx == len(collection['tables']) - 1:
+                    statement += "}}"
+                else:
+                    statement += "}},"
+            statement += "\n\t],"
+            
+            statement += "\n"
+        statement += "}"
+            
+        
+
+    else:
+        statement += "{\n"
+        statement += "\"{}\": ".format(DBname)
+        statement += "{\n"
+        for colInd, collection in enumerate(TableData):
+            statement +="\n" + "\"" + collection['tableName'] + "\": ["
+            for tabIndx in range(len(collection['tables'])):
+                statement += "\n\t{\"" + collection['objectName'] + "\": {"
+                for index, header in enumerate(collection['headers']):
+                    statement += "\"" + header + "\": " + "\"" + collection['tables'][tabIndx][index]
+                    statement += "\""
+                    if index == len(collection['headers']) - 1:
+                        statement += ""
+                    else:
+                        statement += ", "
+                if tabIndx == len(collection['tables']) - 1:
+                    statement += "}}"
+                else:
+                    statement += "}},"
+            if colInd == len(TableData) - 1:
+                statement += "\n\t\t]"
+            else:
+                statement += "\n\t\t],"
+        statement += "\n\t\t}\n}"
+        
+    write()
+    return statement
+
+if __name__ == "__main__":
+    import retrieveCSV
+    
+    x = [('Answers','Answer', 'Answers.csv'), ('Questions','Question','Questions.csv')]
+    y = []
+    for i in x:
+        item = retrieveCSV.prototypeREAD(i[0], i[1], i[2])
+        y.append(item)
+    z = buildJSDB('TESTDB', y, JSON=True, writeFile=True)
+    print(z)
+
+        print("\n")
+        print("!!!! {} !!!!".format(sheet))
+        print(sheet[y][x])
+    print("I'm done looping!")
