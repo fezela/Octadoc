@@ -9,3 +9,6 @@ on their various implementation efforts without having to connect their code to 
 When a change is made to the format of the datastructure or table layout.  Changes can be made across all platforms, one
 time, without effecting the development progress; aside from the need to restructure their own code if necessary.  Changes 
 will then be uniform and hopefully easier to manage.
+
+01/11/2021
+I would like to add a curses interface.  I think that will start as soon as I have the website I'm working on go live.
