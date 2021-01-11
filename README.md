@@ -12,3 +12,9 @@ will then be uniform and hopefully easier to manage.
 
 01/11/2021
 I would like to add a curses interface.  I think that will start as soon as I have the website I'm working on go live.
+
+GOALS
+
+-The ability to create project.  This will create a path and load files and structure based on user selection
+-The ability to save a project.
+-The ability to select an open project from the user interface.
