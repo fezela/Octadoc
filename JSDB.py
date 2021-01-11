@@ -1,22 +1,15 @@
-from settings import *
+from settings import amHome, home, away
 
-def buildJSDB(DBname, TableData, JSON=False, writeFile=False):
+def buildJSDB(configFile, DBname, TableData, JSON=False, writeFile=False):
     statement = ""
     def write():
-                    
         if writeFile != False and JSON == True:
-            if amHome == True:
-                f = open(home['jsonDatabase'], "w")
-            else:
-                f = open(away['jsonDatabase'], "w")
+            f = open(configFile.JSON_DATABASE, "w")
             for line in statement:
                 f.write(line)
         
         elif writeFile != False:
-            if amHome == True:
-                f = open(home['jsDatabase'], "w")
-            else:
-                f = open(away['jsDatabase'], "w")
+            f = open(configFile.JSDATABASE, "w")
             for line in statement:
                 f.write(line)
         
@@ -35,7 +28,7 @@ def buildJSDB(DBname, TableData, JSON=False, writeFile=False):
                 for index, header in enumerate(collection['headers']):
                     statement += header + ": " + "\"" + collection['tables'][tabIndx][index] #printing out the contents of the table seperating each value with ""
                     statement += "\""
-                    if index == len(collection['headers']) - 1: #deetermining whether this is the last of the content in a table row
+                    if index == len(collection['headers']) - 1: #determining whether this is the last of the content in a table row
                         statement += " " 
                     else:
                         statement += ", "
@@ -51,7 +44,7 @@ def buildJSDB(DBname, TableData, JSON=False, writeFile=False):
                 
 
     else:
-        #THIS ISN"T WORKING
+        #THIS ISN'T WORKING
         print("Now running JSON version of buildJSDB()!")
         print() * 5
         
@@ -60,16 +53,18 @@ def buildJSDB(DBname, TableData, JSON=False, writeFile=False):
     return statement
 
 if __name__ == "__main__":
-    import retrieveCSV
+    """
+    #There is no path argument in the getCSV function 
+    from retrieveCSV import getCSV
     
     x = [('Answers','Answer', 'Answers.csv'), ('Questions','Question','Questions.csv')]
     y = []
     for i in x:
-        item = retrieveCSV.READ(i[0], i[1], i[2])
+        item = getCSV(i[0], i[1], i[2])
         y.append(item)
     z = buildJSDB('TESTDB', y, JSON=False, writeFile=True)
     print(z)
-
+    """
             
             
     

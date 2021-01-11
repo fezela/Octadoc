@@ -1,13 +1,8 @@
 import subprocess
 import time
-from settings import *
 
-if amHome == True:   
-    port = home['librePort']
-
-else:
-    port = away['librePort']
-def activateLibreOffice(): #This needs to take in to account port numbers
+def activateLibreOffice(port): #This needs to take in to account port numbers
+    port = str(port)
     print("activating temporary instance of LibreOffice!!!")
     subprocess.run("soffice --accept=\"socket,host=localhost,port={};urp;\" --headless &".format(port), check=True, shell=True)
     print("running SLEEP for (5) secs to validate code has processed.")
@@ -26,7 +21,7 @@ def deactivateLibreOffice():
     p2 = subprocess.run("pidof soffice.bin", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     pid = p2.stdout.decode("utf-8").rstrip("\n")#This praticular call is pretty complex. INFO below.
     if len(pid) != 0:
-        print("instance of LibreOffice running at PID: {}").format(pid)
+        print("instance of LibreOffice running at PID: {}".format(pid))
         print("killing process.")
         subprocess.run("kill {}".format(pid), shell=True, check=True)
     
@@ -43,5 +38,4 @@ def deactivateLibreOffice():
 
 
 
-if  __name__ == "__main__":
-    deactivateLibreOffice()
+

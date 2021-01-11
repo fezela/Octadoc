@@ -1,19 +1,9 @@
 import pyoo
 import libreCall
-from settings import *
 
 
 
 
-
-
-
-
-
-
-
-
- 
 def writeCSV(content, path):
     for d in content:
         with open(path + d['sheetName'] + ".csv", mode='w') as f:
@@ -79,30 +69,18 @@ def readLibre(document):
     
 
 
-def runRetrieveLibre():
+def runRetrieveLibre(configFile):
     print("running retrieveLibre.py")
-    if amHome == True:
-        port = int(home['librePort'])
-        myPath = home['csvpath']
-
-    else:
-        port = int(away['librePort'])
-        myPath = away['csvpath']
-
-    #Call deactivateLibreOffice first to exit any running instances of LibreOffice !DONE!
-    #if possible it should also prompt the user to save their work.
+    port = configFile.LIBREPORT
+    myPath = configFile.CSVPATH
+  
+    #if possible the script should prompt the user to save their work.
     #This script also needs to deal with the port not being available.
     libreCall.deactivateLibreOffice()
-    libreCall.activateLibreOffice()
+    libreCall.activateLibreOffice(port)
     desktop = pyoo.Desktop('localhost', port)
-
-    if amHome == True:
-        doc = desktop.open_spreadsheet(home['osdPath'])
-
-    else:
-        doc = desktop.open_spreadsheet(away['osdPath'])
-
-    x = readLibre(doc)
-    writeCSV(x, myPath)
+    doc = desktop.open_spreadsheet(configFile.OSDPATH)
+    libre = readLibre(doc)
+    writeCSV(libre, myPath)
     doc.close()
     libreCall.deactivateLibreOffice()
